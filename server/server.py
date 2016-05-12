@@ -21,7 +21,7 @@ db = SQLAlchemy(app)
 
 
 class Button(db.Model):
-    __tablename__ = 'monitor'
+    __tablename__ = 'button'
     id = Column(Integer, primary_key=True)
     mac = Column(String(18), nullable=False, unique=True)
     counter_access = Column(Integer, default=0)
@@ -33,6 +33,7 @@ class Button(db.Model):
 
     def raise_counter(self):
         self.counter_access += 1
+        self.date_access = datetime.datetime.now().utcnow()
 
     def to_json(self):
         return json.dumps({"id": self.id, "count": self.counter_access})
@@ -55,12 +56,11 @@ def button():
         print data['mac']
         button = Button.query.filter_by(mac=data['mac']).first()
         if button is None:
-            monitor = Button(data['mac'])
-            db.session.add(monitor)
+            button = Button(data['mac'])
+            db.session.add(button)
             db.session.commit()
-        else:
-            button.raise_counter()
-            db.session.commit()
+        button.raise_counter()
+        db.session.commit()
         print button
         return button.to_json(), 200
 
