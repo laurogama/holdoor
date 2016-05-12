@@ -1,0 +1,73 @@
+{% macro row() %}
+    <div class="row">
+{% endmacro %}
+
+{% macro container() %}
+    <div class="container ">
+{% endmacro %}
+
+{% macro col(cols=[]) %}
+    <div class="col {{ cols|join(' ') }}">
+{% endmacro %}
+
+{% macro enddiv() %}
+    </div>
+{% endmacro %}
+
+{% block doc -%}
+    <!DOCTYPE html>
+    <html{% block html_attribs %}{% endblock html_attribs %}>
+    {%- block html %}
+        <head>
+            {%- block head %}
+                <title>{% block title %}{% endblock title %}</title>
+
+                {%- block metas %}
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                {%- endblock metas %}
+
+                {%- block styles %}
+                    {% assets "css" %}
+                        <link rel="stylesheet" href="{{ ASSET_URL }}"/>
+                    {% endassets %}
+                {%- endblock styles %}
+            {%- endblock head %}
+        </head>
+        <body{% block body_attribs %}{% endblock body_attribs %}>
+        {% block body -%}
+            {% block navbar %}
+            {%- endblock navbar %}
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title">{% block body_title %}{%- endblock %}</span>
+                <!-- Add spacer, to align navigation to the right -->
+            </div>
+            <div class="mdl-layout-spacer"></div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class=mdl-list>
+                        {% for message in messages %}
+                            <li class="mdl-list__item">
+                                <span class="mdl-list__item-primary-content">
+                                {{ message }}
+                            </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            {% block content -%}
+
+            {%- endblock content %}
+
+            {% block scripts %}
+                {% assets "js" %}
+                    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+                {% endassets %}
+            {%- endblock scripts %}
+            {% block footer %}
+            {%- endblock footer %}
+        {%- endblock body %}
+        </body>
+    {%- endblock html %}
+    </html>
+{% endblock doc -%}
