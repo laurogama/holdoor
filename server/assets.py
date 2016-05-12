@@ -10,6 +10,6 @@ bundles = {
 
     'css': Bundle(
         'css/material.min.css',
-        # 'css/style.css'
+        'css/style.css'
     )
 }

@@ -1,51 +1,42 @@
-import datetime
-import json
 import logging
 
-from flask import Flask, render_template, request, jsonify
+from flask import render_template, request, jsonify
 from flask.ext.assets import Environment
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, String, Integer, DateTime
 
 from ErrorHandler import InvalidUsage
+from Models import Button, Product
 from assets import bundles
+from bootstrap import app, db
 from settings import CONFIG
 
-app = Flask(__name__)
 assets = Environment(app)
 assets.register(bundles)
 configuration = CONFIG
 app.config['SECRET_KEY'] = configuration['SECRET_KEY']
 app.config['SQLALCHEMY_DATABASE_URI'] = configuration['SQLITE_TEST_DB']
-db = SQLAlchemy(app)
-
-
-class Button(db.Model):
-    __tablename__ = 'button'
-    id = Column(Integer, primary_key=True)
-    mac = Column(String(18), nullable=False, unique=True)
-    counter_access = Column(Integer, default=0)
-    date_access = Column(DateTime)
-
-    def __init__(self, mac):
-        self.mac = mac
-        self.date_access = datetime.datetime.now().utcnow()
-
-    def raise_counter(self):
-        self.counter_access += 1
-        self.date_access = datetime.datetime.now().utcnow()
-
-    def to_json(self):
-        return json.dumps({"id": self.id, "count": self.counter_access})
-
-    def __repr__(self):
-        return "Button ID:{}, MAC ADDRESS: {}, Counts: {}".format(self.id, self.mac, self.counter_access)
 
 
 @app.route('/')
 def index():
     buttons = Button.query.all()
     return render_template("index.html", buttons=buttons)
+
+
+@app.route('/products')
+def products_list():
+    try:
+        products = Product.query.all()
+        return render_template("product/product_list.html", products=products)
+    except Exception as exception:
+        print exception
+        raise InvalidUsage('Still coding', status_code=500)
+
+
+@app.route('/products/new', methods=['GET', 'POST'])
+def products_new():
+    if request.method == 'POST':
+        pass
+    return render_template('product/product_new.html')
 
 
 @app.route('/button/', methods=['POST'])
@@ -81,5 +72,6 @@ def handle_invalid_usage(error):
 
 if __name__ == '__main__':
     logging.basicConfig(filename=configuration['LOG_PATH'], level=logging.INFO, debug=True)
+
     db.create_all()
     app.run(host='0.0.0.0', port=configuration['APP_PORT'])

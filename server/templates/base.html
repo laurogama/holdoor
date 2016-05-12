@@ -1,19 +1,3 @@
-{% macro row() %}
-    <div class="row">
-{% endmacro %}
-
-{% macro container() %}
-    <div class="container ">
-{% endmacro %}
-
-{% macro col(cols=[]) %}
-    <div class="col {{ cols|join(' ') }}">
-{% endmacro %}
-
-{% macro enddiv() %}
-    </div>
-{% endmacro %}
-
 {% block doc -%}
     <!DOCTYPE html>
     <html{% block html_attribs %}{% endblock html_attribs %}>
@@ -35,37 +19,52 @@
         </head>
         <body{% block body_attribs %}{% endblock body_attribs %}>
         {% block body -%}
-            {% block navbar %}
-            {%- endblock navbar %}
-            <div class="mdl-layout__header-row">
-                <span class="mdl-layout-title">{% block body_title %}{%- endblock %}</span>
-                <!-- Add spacer, to align navigation to the right -->
-            </div>
-            <div class="mdl-layout-spacer"></div>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class=mdl-list>
-                        {% for message in messages %}
-                            <li class="mdl-list__item">
+            <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+                <header class="mdl-layout__header">
+                    <div class="mdl-layout__header-row">
+                        <!-- Title -->
+                        <span class="mdl-layout-title">Dash button</span>
+                        <!-- Add spacer, to align navigation to the right -->
+                        <div class="mdl-layout-spacer"></div>
+                        <!-- Navigation -->
+                        <nav class="mdl-navigation">
+                            <a class="mdl-navigation__link" href="{{ url_for('index') }}">Home</a>
+                        </nav>
+                    </div>
+                </header>
+                <div class="mdl-layout__drawer">
+                    <span class="mdl-layout-title">Menu</span>
+                    <nav class="mdl-navigation">
+                        <a class="mdl-navigation__link" href="{{ url_for('index') }}">Home</a>
+                        <a class="mdl-navigation__link" href="{{ url_for('products_list') }}">Produtos</a>
+                    </nav>
+                </div>
+                <main class="mdl-layout__content">
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <ul class=mdl-list>
+                                {% for message in messages %}
+                                    <li class="mdl-list__item">
                                 <span class="mdl-list__item-primary-content">
                                 {{ message }}
                             </span>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-            {% block content -%}
-
-            {%- endblock content %}
-
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endwith %}
+                    {% block content -%}
+                    {%- endblock content %}
+                </main>
+            </div>
+            {% block footer %}
+            {%- endblock footer %}
             {% block scripts %}
                 {% assets "js" %}
                     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
                 {% endassets %}
             {%- endblock scripts %}
-            {% block footer %}
-            {%- endblock footer %}
+            </div>
         {%- endblock body %}
         </body>
     {%- endblock html %}
