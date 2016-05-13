@@ -1,22 +1,6 @@
 body {
     background-color: beige;
 }
-.mdl-layout__header{
-    background-color: #00c853;
-}
-
-#edit-card .mdl-card {
-    margin-left: 10px;
-}
-
-#edit-card .mdl-card__title {
-    background-color: orange;
-}
-
-#table-title {
-    background-color: orange;
-    align-content: center;
-}
 
 .mdl-data-table {
     border: none;

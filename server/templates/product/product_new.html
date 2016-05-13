@@ -2,31 +2,26 @@
 {% block content %}
     <div class="mdl-grid">
         <div class="mdl-cell mdl-cell--6-col mdl-cell--4-offset-desktop mdl-cell--4-offset-tablet">
-            <h1>Buttons</h1>
-            {% if buttons %}
-                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                    <thead>
-                    <tr>
-                        <th class="mdl-data-table__cell--numeric" align="center">Id</th>
-                        <th class="mdl-data-table__cell--numeric" align="center">Name</th>
-                        <th class="mdl-data-table__cell--non-numeric" align="center">Description</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for each in products %}
-                        <tr style="background-color: #fffde7">
-                            <td>{{ each.id }}</td>
-                            <td>{{ each.name }}</td>
-                            <td>{{ each.description }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+            <form action="{{ url_for('product_new') }}" method="post">
+                <div class="mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title"><h2 class="mdl-card__title-text">New Product</h2></div>
+                    <div class="mdl-card__actions mdl-card--border">
 
-            {% else %}
-                <div>No Buttons added.</div>
-
-            {% endif %}
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-textfield__label" for="name">Name</label>
+                            <input type="text" id="name" name="name" class="mdl-textfield__input">
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-textfield__label" for="description">Description</label>
+                            <input type="text" id="description" name="description" class="mdl-textfield__input">
+                        </div>
+                        <input type="submit" value="Add"
+                               class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                           href="{{ url_for('product_list') }}">Back</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}

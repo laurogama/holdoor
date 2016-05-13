@@ -38,8 +38,9 @@ class Product(db.Model):
     description = Column(String(120))
     buttons = relationship('Button', backref='product')
 
-    def __init__(self, name):
+    def __init__(self, name, description):
         self.name = name
+        self.description = description
 
     def __repr__(self):
         return "Id:{}, Name:{}, Description:{}".format(self.id, self.name, self.description)

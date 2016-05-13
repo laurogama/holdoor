@@ -1,6 +1,6 @@
 import logging
 
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, flash
 from flask.ext.assets import Environment
 
 from ErrorHandler import InvalidUsage
@@ -22,8 +22,8 @@ def index():
     return render_template("index.html", buttons=buttons)
 
 
-@app.route('/products')
-def products_list():
+@app.route('/product')
+def product_list():
     try:
         products = Product.query.all()
         return render_template("product/product_list.html", products=products)
@@ -32,11 +32,17 @@ def products_list():
         raise InvalidUsage('Still coding', status_code=500)
 
 
-@app.route('/products/new', methods=['GET', 'POST'])
-def products_new():
-    if request.method == 'POST':
-        pass
-    return render_template('product/product_new.html')
+@app.route('/product/new', methods=['GET', 'POST'])
+def product_new():
+    try:
+        if request.method == 'POST':
+            product = Product(request.form['name'], request.form['description'])
+            db.session.add(product)
+            db.session.commit()
+            flash('Product was added successfully.')
+        return render_template('product/product_new.html')
+    except Exception as exception:
+        print exception
 
 
 @app.route('/button/', methods=['POST'])
