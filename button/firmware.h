@@ -1,5 +1,10 @@
 #ifndef _FIRMWARE_H
 #define _FIRMWARE_H
+/*
+Dash button - By Lauro Gama
+10/05/2016
+*/
+
 #include <ESP8266WiFi.h>
 //#include <WiFiClient.h> 
 #include <ESP8266HTTPClient.h>
@@ -8,18 +13,23 @@
 #define ESP_BAUDRATE        19200
 #define CONNECTION_TIMEOUT  15000
 
-#define SERVER_APP          "esb-esdcontrol.fpftech.dev"
-#define APP_PORT            11223
-#define BUTTON              1             
-#define API_ENDPOINT        "/button"
+#define SERVER_APP          "192.168.1.116"
+#define APP_PORT            8000
+#define USERBUTTON          D0             
+#define API_ENDPOINT        "/click/"
+
+
 enum TIMING{
     CLOCK=1,
+    SLEEP_DELAY_IN_SECONDS=30,
     WAIT_CONNECT=100,
     WAIT_STATUS=1000,
-    WAIT_NOTIFY=2000
+    WAIT_NOTIFY=2000,
+    CONNECT_TIMEOUT=60000
+
 };
 
-const char *ssid = "inventus";
+const char *ssid = "inventus2";
 const char *password = "salcsysqsxrt";
 HTTPClient http;
 
@@ -33,8 +43,11 @@ typedef enum {
 
 typedef enum {
     CONNECT = 1,
-}Message;
+}MessageType;
 
+void turnOff(int pin);
+String prepareContent(MessageType messageType);
+String prepareConnectContent();
 void manageConnection();
 boolean connect();
 boolean notifyAppServer();

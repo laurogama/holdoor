@@ -54,6 +54,7 @@ def product_new():
 
 @app.route('/click/', methods=['POST'])
 def button():
+    print "Click"
     try:
         print request
         data = request.get_json(force=True)
