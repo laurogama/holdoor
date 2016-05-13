@@ -1,0 +1,33 @@
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-offset-desktop mdl-cell--4-offset-tablet">
+        <h2>Products</h2>
+        {% if products %}
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--numeric" align="center">Id</th>
+                    <th class="mdl-data-table__cell--numeric" align="center">Name</th>
+                    <th class="mdl-data-table__cell--non-numeric" align="center">Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for each in products %}
+                    <tr style="background-color: #fffde7">
+                        <td>{{ each.id }}</td>
+                        <td>{{ each.name }}</td>
+                        <td>{{ each.description }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        {% else %}
+            <div>No Products added.</div>
+        {% endif %}
+        <a class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+           href="{{ url_for('product_new') }}"> New</a>
+    </div>
+    <div class="mdl-cell mdl-cell--6-col">
+
+    </div>
+</div>

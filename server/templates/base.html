@@ -10,7 +10,6 @@
                 {%- block metas %}
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 {%- endblock metas %}
-
                 {%- block styles %}
                     {% assets "css" %}
                         <link rel="stylesheet" href="{{ ASSET_URL }}"/>
@@ -39,7 +38,8 @@
                     <span class="mdl-layout-title">Menu</span>
                     <nav class="mdl-navigation">
                         <a class="mdl-navigation__link" href="{{ url_for('index') }}">Home</a>
-                        <a class="mdl-navigation__link" href="{{ url_for('product_list') }}">Produtos</a>
+                        <a class="mdl-navigation__link" href="{{ url_for('button_list') }}">Buttons</a>
+                        <a class="mdl-navigation__link" href="{{ url_for('product_list') }}">Products</a>
                     </nav>
                 </div>
                 <main class="mdl-layout__content">

@@ -1,35 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="mdl-grid">
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-offset-desktop mdl-cell--4-offset-tablet">
-            <h1>Buttons</h1>
-            {% if buttons %}
-                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                    <thead>
-                    <tr>
-                        <th class="mdl-data-table__cell--numeric" align="center">Serial Number</th>
-                        <th class="mdl-data-table__cell--non-numeric">Mac Address</th>
-                        <th class="mdl-data-table__cell--numeric" align="center">Product</th>
-                        <th class="mdl-data-table__cell--non-numeric" align="center">Último pedido</th>
-                        <th class="mdl-data-table__cell--numeric" align="center">Pedidos</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for each in buttons %}
-                        <tr style="background-color: #fffde7">
-                            <td>{{ each.id }}</td>
-                            <td>{{ each.mac }}</td>
-                            <td>{{ each.product.name }}</td>
-                            <td>{{ each.date_access.strftime('%x %X') }}</td>
-                            <td>{{ each.counter_access }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <div>No Buttons added.</div>
-
-            {% endif %}
-        </div>
-    </div>
+    {% include 'button/inner_button_list.html' %}
+    {% include 'product/inner_product_list.html' %}
 {% endblock %}

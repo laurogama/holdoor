@@ -19,10 +19,17 @@ app.config['SQLALCHEMY_DATABASE_URI'] = configuration['SQLITE_TEST_DB']
 @app.route('/')
 def index():
     buttons = Button.query.all()
-    return render_template("index.html", buttons=buttons)
+    products = Product.query.all()
+    return render_template("index.html", buttons=buttons, products=products)
 
 
-@app.route('/product')
+@app.route('/button/')
+def button_list():
+    buttons = Button.query.all()
+    return render_template("button/button_list.html", buttons=buttons)
+
+
+@app.route('/product/')
 def product_list():
     try:
         products = Product.query.all()
@@ -32,7 +39,7 @@ def product_list():
         raise InvalidUsage('Still coding', status_code=500)
 
 
-@app.route('/product/new', methods=['GET', 'POST'])
+@app.route('/product/new/', methods=['GET', 'POST'])
 def product_new():
     try:
         if request.method == 'POST':
@@ -45,7 +52,7 @@ def product_new():
         print exception
 
 
-@app.route('/button/', methods=['POST'])
+@app.route('/click/', methods=['POST'])
 def button():
     try:
         print request
