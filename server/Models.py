@@ -24,6 +24,10 @@ class Button(db.Model):
         self.counter_access += 1
         self.date_access = datetime.datetime.now().utcnow()
 
+    def reset_counter(self):
+        self.counter_access = 0
+        self.date_access = datetime.datetime.now().utcnow()
+
     def to_json(self):
         return json.dumps({"id": self.id, "count": self.counter_access})
 

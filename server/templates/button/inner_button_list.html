@@ -10,6 +10,7 @@
                     <th class="mdl-data-table__cell--numeric" align="center">Product</th>
                     <th class="mdl-data-table__cell--non-numeric" align="center">Último pedido</th>
                     <th class="mdl-data-table__cell--numeric" align="center">Pedidos</th>
+                    <th class="mdl-data-table__cell--non-numeric">Reset</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -20,6 +21,9 @@
                         <td>{{ each.product.name }}</td>
                         <td>{{ each.date_access.strftime('%x %X') }}</td>
                         <td>{{ each.counter_access }}</td>
+                        <td>
+                            <a class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                               href="{{ url_for('button_reset_purchases',button_id=each.id) }}">Reset</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>

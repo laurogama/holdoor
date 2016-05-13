@@ -1,6 +1,7 @@
+import datetime
 import logging
 
-from flask import render_template, request, jsonify, flash
+from flask import render_template, request, jsonify, flash, url_for, redirect
 from flask.ext.assets import Environment
 
 from ErrorHandler import InvalidUsage
@@ -29,6 +30,24 @@ def button_list():
     return render_template("button/button_list.html", buttons=buttons)
 
 
+@app.route('/button/reset/<button_id>')
+def button_reset_purchases(button_id):
+    try:
+        if button_id:
+            button = Button.query.filter_by(id=button_id).first()
+            if button is not None:
+                button.reset_counter()
+                db.session.commit()
+                flash('Purchases counter reset.')
+        return redirect(url_for('index'))
+
+    except Exception as exception:
+        print exception
+        flash('Error reseting counter')
+        return redirect(url_for('index'))
+    pass
+
+
 @app.route('/product/')
 def product_list():
     try:
@@ -54,7 +73,6 @@ def product_new():
 
 @app.route('/click/', methods=['POST'])
 def button():
-    print "Click"
     try:
         print request
         data = request.get_json(force=True)
@@ -67,6 +85,7 @@ def button():
         button.raise_counter()
         db.session.commit()
         print button
+        logging.info("{}:{}".format(datetime.datetime.now(), button))
         return button.to_json(), 200
 
     except Exception as exception:
@@ -86,6 +105,8 @@ def handle_invalid_usage(error):
 
 if __name__ == '__main__':
     logging.basicConfig(filename=configuration['LOG_PATH'], level=logging.INFO, debug=True)
-
     db.create_all()
-    app.run(host='0.0.0.0', port=configuration['APP_PORT'])
+    try:
+        app.run(host='0.0.0.0', port=configuration['APP_PORT'], debug=True)
+    except Exception as exception:
+        print exception

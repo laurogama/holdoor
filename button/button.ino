@@ -35,9 +35,6 @@ String prepareConnectContent(){
     String message = "{\"mac\":\"";
     message.concat(WiFi.macAddress());
     message.concat("\"}");
-    //message.concat("\",\"ip\":\"");
-    //message.concat(WiFi.localIP().toString());
-    //message.concat("\"}");
     return message;
 }
 
@@ -56,8 +53,17 @@ boolean connect(){
     return true;
 }
 
+void sendMessage(){
+    if(connect()){
+        Serial.println("Connected");
+        if(notifyAppServer(MessageType::CONNECT)){
+            Serial.println("Message Sent");
+        }
+    }
+}
 void setup( void ) {
     Serial.begin(ESP_BAUDRATE);
+    
 // disable all output to save power
     turnOff(0);
     turnOff(2);
@@ -67,21 +73,12 @@ void setup( void ) {
     turnOff(13);
     turnOff(14);
     turnOff(15);
-    pinMode(USERBUTTON, INPUT);
-    //attachInterrupt(digitalPinToInterrupt(BUTTON), buttonHandler, CHANGE );
-    Serial.println("Started");    
 }
 
 void loop ( void ) {
-    if(connect()){
-        Serial.println("Connected");
-        if(notifyAppServer(MessageType::CONNECT)){
-            Serial.println("Message Sent");
-        }
-    }
-    //system_deep_sleep_set_option(0);
-    //ESP.deepSleep(SLEEP_DELAY_IN_SECONDS * 1000000, WAKE_RF_DEFAULT);
+    sendMessage();
+    ESP.deepSleep(2 * 1000000, WAKE_RF_DEFAULT);
     delay(100);
-    //manageConnection();
+    
     
 }

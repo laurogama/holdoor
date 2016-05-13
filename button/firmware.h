@@ -6,11 +6,13 @@ Dash button - By Lauro Gama
 */
 
 #include <ESP8266WiFi.h>
-//#include <WiFiClient.h> 
 #include <ESP8266HTTPClient.h>
-
+//#include "credentials.h"
+extern "C" {
+  #include "user_interface.h"
+}
 #define VERSION             "0.0.1"
-#define ESP_BAUDRATE        19200
+#define ESP_BAUDRATE        74880
 #define CONNECTION_TIMEOUT  15000
 
 #define SERVER_APP          "192.168.1.116"
@@ -21,7 +23,7 @@ Dash button - By Lauro Gama
 
 enum TIMING{
     CLOCK=1,
-    SLEEP_DELAY_IN_SECONDS=30,
+    SLEEP_DELAY_IN_SECONDS=2,
     WAIT_CONNECT=100,
     WAIT_STATUS=1000,
     WAIT_NOTIFY=2000,
@@ -49,6 +51,7 @@ void turnOff(int pin);
 String prepareContent(MessageType messageType);
 String prepareConnectContent();
 void manageConnection();
+void sendMessage();
 boolean connect();
 boolean notifyAppServer();
 #endif
