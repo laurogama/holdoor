@@ -5,7 +5,7 @@ from flask import render_template, request, jsonify, flash, url_for, redirect
 from flask.ext.assets import Environment
 
 from ErrorHandler import InvalidUsage
-from Models import Button, Product
+from Models import Button, Product, Cracha
 from assets import bundles
 from bootstrap import app, db
 from settings import CONFIG
@@ -71,6 +71,15 @@ def product_new():
         print exception
 
 
+@app.route('/cracha_list/')
+def cracha_list():
+    try:
+        crachas = Cracha.query.all()
+        return render_template("cracha/cracha_list.html", crachas=crachas)
+    except Exception as exception:
+        print exception
+
+
 @app.route('/click/', methods=['POST'])
 def button():
     try:
@@ -87,6 +96,24 @@ def button():
         print button
         logging.info("{}:{}".format(datetime.datetime.now(), button))
         return button.to_json(), 200
+
+    except Exception as exception:
+        print exception
+        raise InvalidUsage('Still coding', status_code=500)
+
+
+@app.route('/cracha/', methods=['POST'])
+def cracha():
+    try:
+        print request
+        print request.data
+        data = request.get_json(force=True)
+        print data['mac'], data['rfid']
+        cracha = Cracha(data['mac'], data['rfid'])
+        db.session.add(cracha)
+        db.session.commit()
+        logging.info("{}:{}".format(datetime.datetime.now(), cracha))
+        return 'ok', 200
 
     except Exception as exception:
         print exception

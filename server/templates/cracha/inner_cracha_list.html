@@ -1,0 +1,30 @@
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-offset-desktop mdl-cell--4-offset-tablet">
+        <h2>Rfid Tag</h2>
+        {% if crachas %}
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--numeric" align="center">Id</th>
+                    <th class="mdl-data-table__cell--numeric" align="center">Rfid</th>
+                    <th class="mdl-data-table__cell--non-numeric" align="center">Mac</th>
+                    <th class="mdl-data-table__cell--non-numeric" align="center">Data Acesso</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for cracha in crachas %}
+                    <tr style="background-color: #fffde7">
+                        <td>{{ cracha.id }}</td>
+                        <td>{{ cracha.rfid }}</td>
+                        <td>{{ cracha.mac }}</td>
+                    <td>{{ cracha.date_access.strftime('%x %X') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        {% else %}
+            <div>No Tags added.</div>
+        {% endif %}
+    </div>
+</div>

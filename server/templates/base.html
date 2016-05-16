@@ -34,14 +34,7 @@
                         </nav>
                     </div>
                 </header>
-                <div class="mdl-layout__drawer">
-                    <span class="mdl-layout-title">Menu</span>
-                    <nav class="mdl-navigation">
-                        <a class="mdl-navigation__link" href="{{ url_for('index') }}">Home</a>
-                        <a class="mdl-navigation__link" href="{{ url_for('button_list') }}">Buttons</a>
-                        <a class="mdl-navigation__link" href="{{ url_for('product_list') }}">Products</a>
-                    </nav>
-                </div>
+                {% include 'menu.html' %}
                 <main class="mdl-layout__content">
                     {% with messages = get_flashed_messages() %}
                         {% if messages %}

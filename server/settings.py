@@ -1,8 +1,10 @@
-HOME_FOLDER = ''
+import os
+
+HOME_FOLDER = "C:\Users\lauro.gama\Documents\pessoal\dash\server"
 CONFIG = {}
-CONFIG['LOG_PATH'] = HOME_FOLDER + 'log.log'
+CONFIG['LOG_PATH'] = HOME_FOLDER + '\log.log'
 CONFIG['SECRET_KEY'] = 'USE-YOUR-OWN-SECRET-KEY-DAMNIT'
 CONFIG['APP_PORT'] = 8000
 CONFIG['SSID'] = "inventus"
 CONFIG['PASSWORD'] = "salcsysqsxrt"
-CONFIG['SQLITE_TEST_DB'] = 'sqlite:///' + HOME_FOLDER + 'dash.db'
+CONFIG['SQLITE_TEST_DB'] = 'sqlite:///' + HOME_FOLDER + '\dash.db'

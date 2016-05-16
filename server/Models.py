@@ -13,7 +13,6 @@ class Button(db.Model):
     mac = Column(String(18), nullable=False, unique=True)
     counter_access = Column(Integer, default=0)
     product_id = Column(Integer, ForeignKey('product.id'))
-
     date_access = Column(DateTime)
 
     def __init__(self, mac):
@@ -48,3 +47,19 @@ class Product(db.Model):
 
     def __repr__(self):
         return "Id:{}, Name:{}, Description:{}".format(self.id, self.name, self.description)
+
+
+class Cracha(db.Model):
+    __tablename__ = 'cracha'
+    id = Column(Integer, primary_key=True)
+    mac = Column(String(18), nullable=False)
+    rfid = Column(String(18), nullable=False)
+    date_access = Column(DateTime)
+
+    def __init__(self, mac, rfid):
+        self.mac = mac
+        self.rfid = rfid
+        self.date_access = datetime.datetime.now().utcnow()
+
+    def __repr__(self):
+        return "Cracha ID:{}, MAC ADDRESS: {}, Rfid: {}".format(self.id, self.mac, self.rfid)
