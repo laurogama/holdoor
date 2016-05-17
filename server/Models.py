@@ -70,6 +70,7 @@ class User(db.Model):
     id = Column(Integer, primary_key=True)
     username = Column(String(18), nullable=False)
     rfid = Column(String(18), nullable=False)
+    defcon = Column(Integer, default=0)
 
     def __init__(self, username, rfid):
         self.username = username
@@ -77,3 +78,19 @@ class User(db.Model):
 
     def __repr__(self):
         return "User ID:{}, Username: {}, Rfid: {}".format(self.id, self.username, self.rfid)
+
+
+class Location(db.Model):
+    __tablename__ = 'location'
+    id = Column(Integer, primary_key=True)
+    mac = Column(String(18), nullable=False, unique=True)
+    name = Column(String(50))
+    defcon = Column(Integer, default=0)
+
+    def __init__(self, name, mac, defcon):
+        self.name = name
+        self.mac = mac,
+        self.defcon = defcon
+
+    def __repr__(self):
+        return "ID:{}, name: {}, mac: {}, defcon:{}".format(self.id, self.name, self.mac, self.defcon)
