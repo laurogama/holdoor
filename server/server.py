@@ -5,7 +5,7 @@ from flask import render_template, request, jsonify, flash, url_for, redirect
 from flask.ext.assets import Environment
 
 from ErrorHandler import InvalidUsage
-from Models import Button, Product, Cracha
+from Models import Button, Product, Cracha, User
 from assets import bundles
 from bootstrap import app, db
 from settings import CONFIG
@@ -21,7 +21,27 @@ app.config['SQLALCHEMY_DATABASE_URI'] = configuration['SQLITE_TEST_DB']
 def index():
     buttons = Button.query.all()
     products = Product.query.all()
-    return render_template("index.html", buttons=buttons, products=products)
+    crachas = Cracha.query.all()
+    return render_template("index.html", buttons=buttons, products=products, crachas=crachas)
+
+
+@app.route('/user/')
+def user_list():
+    users = User.query.all()
+    return render_template('user/user_list.html', users=users)
+
+
+@app.route('/user/new/', methods=['POST','GET'])
+def user_new():
+    try:
+        if request.method == 'POST':
+            user = User(request.form['username'], request.form['rfid'])
+            db.session.add(user)
+            db.session.commit()
+            flash('User was added successfully.')
+        return render_template('user/user_new.html')
+    except Exception as exception:
+        print exception
 
 
 @app.route('/button/')
@@ -113,7 +133,10 @@ def cracha():
         db.session.add(cracha)
         db.session.commit()
         logging.info("{}:{}".format(datetime.datetime.now(), cracha))
-        return 'ok', 200
+        if User.query.filter_by(rfid=cracha.rfid).first():
+            return 'ok', 200
+        else:
+            return 'Not authorized', 401
 
     except Exception as exception:
         print exception

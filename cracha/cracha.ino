@@ -1,6 +1,6 @@
  #include "cracha.h"
 
-boolean sendTagToServer(String tag){
+int sendTagToServer(String tag){
     String content = prepareTagContent(tag);
     Serial.println(content);
     String host = SERVER_APP;
@@ -9,7 +9,7 @@ boolean sendTagToServer(String tag){
     int httpCode = http.POST(content);
     http.end();
     Serial.println(httpCode);
-    return httpCode==http_codes::HTTP_OK;
+    return httpCode;
 }
 
 String prepareTagContent(String tag){
@@ -35,11 +35,27 @@ boolean connect(){
     return true;
 }
 
+void notifyOpenAccess(){
+    Serial.println("Access OK");
+    playBuzzer(SHORT_BUZZ);
+}
+void notifyBlockedAccess(){
+    Serial.println("Access Unauthorized");
+    playBuzzer(SHORT_BUZZ);
+    playBuzzer(SHORT_BUZZ);
+    blinkLed(LED1, SHORT_BUZZ);
+}
+
 void sendMessage(String tag){
     if(connect()){
         Serial.println("Connected");
-        if(sendTagToServer(tag)){
-            Serial.println("Message Sent");
+        switch(sendTagToServer(tag)){
+            case HTTP_OK:
+            notifyOpenAccess();
+            break;
+            case HTTP_NOT_AUTHORIZED:
+            notifyBlockedAccess();
+            break;
         }
     }
 }
@@ -49,6 +65,7 @@ void setup( void ) {
     Serial.begin(ESP_BAUDRATE);
     rfidHandler.init();
     pinMode(BUZZER,OUTPUT);
+    pinMode(LED1,OUTPUT);
     digitalWrite(BUZZER,LOW);
     Serial.println("Start");
 }
@@ -59,13 +76,17 @@ void playBuzzer(int duration){
     digitalWrite(BUZZER, LOW);
 }
 
+void blinkLed(int led, int period){
+    digitalWrite(led,HIGH); 
+    delay(period);
+    digitalWrite(led,LOW);
+}
+
 void loop ( void ) {
 
     if(rfidHandler.readrfidTag()){
         playBuzzer(TIMING::SHORT_BUZZ);
         sendMessage(rfidHandler.getrfidTag());
     }
-    //Serial.print("Reading: ");
-    Serial.println(rfidHandler.getrfidTag());
     delay(100);
 }

@@ -15,12 +15,15 @@ extern "C" {
 #define VERSION             "0.0.1"
 #define ESP_BAUDRATE        74880
 #define CONNECTION_TIMEOUT  15000
-#define BUZZER              2
 
 #define SERVER_APP          "192.168.1.116"
 #define APP_PORT            8000
 #define API_ENDPOINT        "/cracha/"
 
+enum GPIO{
+    BUZZER=2,
+    LED1=5
+};
 
 enum TIMING{
     SHORT_BUZZ=500,
@@ -51,8 +54,11 @@ typedef enum {
 
 RfidHandlerClass rfidHandler;
 String prepareTagContent(String tag);
-boolean sendTagToServer(String tag);
+int sendTagToServer(String tag);
 void sendMessage(String tag);
 void playBuzzer(int duration);
+void blinkLed(int led, int period);
+void notifyOpenAccess();
+void notifyBlockedAccess();
 boolean connect();
 #endif

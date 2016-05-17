@@ -1,0 +1,28 @@
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-offset-desktop mdl-cell--4-offset-tablet">
+        <h2>Users</h2>
+        {% if users %}
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--numeric" align="center">Id</th>
+                    <th class="mdl-data-table__cell--numeric" align="center">Rfid</th>
+                    <th class="mdl-data-table__cell--non-numeric" align="center">Username</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr style="background-color: #fffde7">
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.rfid }}</td>
+                        <td>{{ user.username }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div>No Users added.</div>
+        {% endif %}
+        <a class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect" href="{{ url_for('user_new') }}">New</a>
+    </div>
+</div>

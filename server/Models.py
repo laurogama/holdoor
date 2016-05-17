@@ -63,3 +63,17 @@ class Cracha(db.Model):
 
     def __repr__(self):
         return "Cracha ID:{}, MAC ADDRESS: {}, Rfid: {}".format(self.id, self.mac, self.rfid)
+
+
+class User(db.Model):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True)
+    username = Column(String(18), nullable=False)
+    rfid = Column(String(18), nullable=False)
+
+    def __init__(self, username, rfid):
+        self.username = username
+        self.rfid = rfid
+
+    def __repr__(self):
+        return "User ID:{}, Username: {}, Rfid: {}".format(self.id, self.username, self.rfid)
