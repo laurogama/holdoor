@@ -31,7 +31,7 @@ def user_list():
     return render_template('user/user_list.html', users=users)
 
 
-@app.route('/user/new/', methods=['POST','GET'])
+@app.route('/user/new/', methods=['POST', 'GET'])
 def user_new():
     try:
         if request.method == 'POST':
@@ -42,6 +42,15 @@ def user_new():
         return render_template('user/user_new.html')
     except Exception as exception:
         print exception
+
+
+@app.route('/user/delete/<user_id>', methods=['POST', 'GET'])
+def user_delete(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    db.session.delete(user)
+    db.session.commit()
+    return redirect(url_for('user_list'))
+    pass
 
 
 @app.route('/button/')

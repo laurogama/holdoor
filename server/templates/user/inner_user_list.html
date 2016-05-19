@@ -8,6 +8,7 @@
                     <th class="mdl-data-table__cell--numeric" align="center">Id</th>
                     <th class="mdl-data-table__cell--numeric" align="center">Rfid</th>
                     <th class="mdl-data-table__cell--non-numeric" align="center">Username</th>
+                    <th class="mdl-data-table__cell--non-numeric" align="center">Deletar</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -16,6 +17,10 @@
                         <td>{{ user.id }}</td>
                         <td>{{ user.rfid }}</td>
                         <td>{{ user.username }}</td>
+                        <td>
+                            <a class="mdl-button mdl-button--colored mdl-js-button mdl-button--mini-fab mdl-button--fab"
+                               href="{{ url_for('user_delete',user_id=user.id) }}">-</a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -23,6 +28,7 @@
         {% else %}
             <div>No Users added.</div>
         {% endif %}
-        <a class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect" href="{{ url_for('user_new') }}">New</a>
+        <a class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+           href="{{ url_for('user_new') }}">New</a>
     </div>
 </div>
