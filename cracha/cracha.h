@@ -22,7 +22,10 @@ extern "C" {
 
 enum GPIO{
     BUZZER=2,
-    LED1=5
+    LED1=5,
+    LED2=4,
+    LED3 =14,
+    TIP=12
 };
 
 enum TIMING{
@@ -32,6 +35,7 @@ enum TIMING{
     WAIT_CONNECT=100,
     WAIT_STATUS=1000,
     WAIT_NOTIFY=2000,
+    WAIT_OPEN_ACCESS=3000,
     CONNECT_TIMEOUT=60000
 
 };
@@ -58,7 +62,10 @@ int sendTagToServer(String tag);
 void sendMessage(String tag);
 void playBuzzer(int duration);
 void blinkLed(int led, int period);
+void setPins();
 void notifyOpenAccess();
 void notifyBlockedAccess();
+void openAccess(int duration);
+void closeAccess();
 boolean connect();
 #endif

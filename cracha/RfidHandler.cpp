@@ -1,8 +1,8 @@
 #include "RfidHandler.h"
 SoftwareSerial rdmSerial(RX,TX);
 void RfidHandlerClass::init(){
+    cleanSerial();
     rfidTag = "";
-    
     rdmSerial.begin(RFID_BAUDRATE);	
 }
 
@@ -59,13 +59,11 @@ boolean RfidHandlerClass::readrfidTag(){
     return serialEvent();
 }
 
-String 	RfidHandlerClass::getrfidTag()
-{
+String 	RfidHandlerClass::getrfidTag(){
 	return rfidTag;
 }
 
-RfidHandlerClass::~RfidHandlerClass()
-{
+RfidHandlerClass::~RfidHandlerClass(){
 
 }
 

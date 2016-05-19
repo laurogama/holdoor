@@ -36,14 +36,25 @@ boolean connect(){
 }
 
 void notifyOpenAccess(){
+    digitalWrite(LED1, LOW);
     Serial.println("Access OK");
-    playBuzzer(SHORT_BUZZ);
+    blinkLed(LED2, SHORT_BUZZ);
+    openAccess(WAIT_OPEN_ACCESS);
 }
+
 void notifyBlockedAccess(){
+    playBuzzer(SHORT_BUZZ);
     Serial.println("Access Unauthorized");
-    playBuzzer(SHORT_BUZZ);
-    playBuzzer(SHORT_BUZZ);
-    blinkLed(LED1, SHORT_BUZZ);
+}
+
+void openAccess(int duration){
+    digitalWrite(TIP,HIGH);
+    delay(duration);
+    digitalWrite(TIP,LOW);
+}
+
+void closeAccess(){
+    digitalWrite(TIP,LOW);
 }
 
 void sendMessage(String tag){
@@ -58,16 +69,25 @@ void sendMessage(String tag){
             break;
         }
     }
+
 }
 
 void setup( void ) {
     Serial.swap();
     Serial.begin(ESP_BAUDRATE);
     rfidHandler.init();
-    pinMode(BUZZER,OUTPUT);
-    pinMode(LED1,OUTPUT);
+    setPins();
     digitalWrite(BUZZER,LOW);
+    //playBuzzer(SHORT_BUZZ);
     Serial.println("Start");
+}
+
+void setPins(){
+    pinMode(BUZZER,OUTPUT);
+    pinMode(TIP, OUTPUT);
+    pinMode(LED1,OUTPUT);
+    pinMode(LED2,OUTPUT);
+    pinMode(LED3,OUTPUT);
 }
 
 void playBuzzer(int duration){
@@ -83,10 +103,12 @@ void blinkLed(int led, int period){
 }
 
 void loop ( void ) {
-
     if(rfidHandler.readrfidTag()){
         playBuzzer(TIMING::SHORT_BUZZ);
         sendMessage(rfidHandler.getrfidTag());
     }
+    rfidHandler.cleanSerial();
+    digitalWrite(LED1,HIGH);
+    digitalWrite(LED2,LOW);
     delay(100);
 }
