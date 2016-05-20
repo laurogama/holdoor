@@ -37,9 +37,9 @@ boolean connect(){
 
 void notifyOpenAccess(){
     digitalWrite(LED1, LOW);
+    blinkLed(LED2, WAIT_OPEN_ACCESS);
     Serial.println("Access OK");
-    blinkLed(LED2, SHORT_BUZZ);
-    openAccess(WAIT_OPEN_ACCESS);
+    //openAccess(WAIT_OPEN_ACCESS);
 }
 
 void notifyBlockedAccess(){
