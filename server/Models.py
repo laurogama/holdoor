@@ -1,7 +1,7 @@
 import datetime
 import json
 
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Float
 from sqlalchemy.orm import relationship
 
 from bootstrap import db
@@ -85,12 +85,20 @@ class Location(db.Model):
     id = Column(Integer, primary_key=True)
     mac = Column(String(18), nullable=False, unique=True)
     name = Column(String(50))
+    longitude = Column(Float, nullable=True)
+    latitude = Column(Float, nullable=True)
     defcon = Column(Integer, default=0)
 
-    def __init__(self, name, mac, defcon):
+    def __init__(self, mac, name, longitude, latitude, defcon):
         self.name = name
-        self.mac = mac,
+        self.mac = mac
+        self.longitude = longitude
+        self.latitude = latitude
         self.defcon = defcon
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
 
     def __repr__(self):
         return "ID:{}, name: {}, mac: {}, defcon:{}".format(self.id, self.name, self.mac, self.defcon)

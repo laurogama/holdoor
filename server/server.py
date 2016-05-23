@@ -1,3 +1,4 @@
+# coding=utf-8
 import datetime
 import logging
 
@@ -5,7 +6,7 @@ from flask import render_template, request, jsonify, flash, url_for, redirect
 from flask.ext.assets import Environment
 
 from ErrorHandler import InvalidUsage
-from Models import Button, Product, Cracha, User
+from Models import Button, Product, Cracha, User, Location
 from assets import bundles
 from bootstrap import app, db
 from settings import CONFIG
@@ -51,6 +52,35 @@ def user_delete(user_id):
     db.session.commit()
     return redirect(url_for('user_list'))
     pass
+
+
+@app.route('/locations/')
+def location_list():
+    locations = Location.query.all()
+    return render_template('location/location_list.html', locations=locations)
+
+
+def validate_form(form):
+    for item in form:
+        # print "{}:{}->{}".format(item, form[item], type(form[item]))
+        if not form[item]:
+            flash('fields cant be empty', 'error')
+            return False
+    return True
+
+
+@app.route('/locations/new/', methods=['POST', 'GET'])
+def location_new():
+    if request.method == 'GET':
+        return render_template('location/location_new.html')
+    elif request.method == 'POST' and validate_form(request.form):
+        location = Location(request.form['mac'], request.form['name'], request.form['longitude'],
+                            request.form['latitude'], request.form['defcon'])
+        location.add()
+        flash('Location added')
+    else:
+        flash("Invalid form.")
+    return render_template('location/location_new.html')
 
 
 @app.route('/button/')

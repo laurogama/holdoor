@@ -2,7 +2,7 @@
     <div class="mdl-cell mdl-cell--6-col mdl-cell--4-offset-desktop mdl-cell--4-offset-tablet">
         <h2>Users</h2>
         {% if users %}
-            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+            <table id="user_list" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                 <thead>
                 <tr>
                     <th class="mdl-data-table__cell--numeric" align="center">Id</th>
@@ -18,8 +18,7 @@
                         <td>{{ user.rfid }}</td>
                         <td>{{ user.username }}</td>
                         <td>
-                            <a class="mdl-button mdl-button--colored mdl-js-button mdl-button--mini-fab mdl-button--fab"
-                               href="{{ url_for('user_delete',user_id=user.id) }}">-</a>
+                            <a href="{{ url_for('user_delete',user_id=user.id) }}"><i class="material-icons">delete_forever</i></a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -28,7 +27,6 @@
         {% else %}
             <div>No Users added.</div>
         {% endif %}
-        <a class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect"
-           href="{{ url_for('user_new') }}">New</a>
+        <a href="{{ url_for('user_new') }}"><i class="material-icons">add_circle</i></a>
     </div>
 </div>
