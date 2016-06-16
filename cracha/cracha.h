@@ -12,7 +12,7 @@ Leitor RFID wifi - By Lauro Gama
 extern "C" {
   #include "user_interface.h"
 }
-#define VERSION             "0.0.2"
+#define VERSION             "1.0.0"
 #define ESP_BAUDRATE        74880
 #define CONNECTION_TIMEOUT  15000
 
