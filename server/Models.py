@@ -1,7 +1,7 @@
 import datetime
 import json
 
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Float
 from sqlalchemy.orm import relationship
 
 from bootstrap import db
@@ -13,7 +13,6 @@ class Button(db.Model):
     mac = Column(String(18), nullable=False, unique=True)
     counter_access = Column(Integer, default=0)
     product_id = Column(Integer, ForeignKey('product.id'))
-
     date_access = Column(DateTime)
 
     def __init__(self, mac):
@@ -22,6 +21,10 @@ class Button(db.Model):
 
     def raise_counter(self):
         self.counter_access += 1
+        self.date_access = datetime.datetime.now().utcnow()
+
+    def reset_counter(self):
+        self.counter_access = 0
         self.date_access = datetime.datetime.now().utcnow()
 
     def to_json(self):
@@ -44,3 +47,62 @@ class Product(db.Model):
 
     def __repr__(self):
         return "Id:{}, Name:{}, Description:{}".format(self.id, self.name, self.description)
+
+
+class Cracha(db.Model):
+    __tablename__ = 'cracha'
+    id = Column(Integer, primary_key=True)
+    mac = Column(String(18), nullable=False)
+    rfid = Column(String(18), nullable=False)
+    date_access = Column(DateTime)
+
+    def __init__(self, mac, rfid):
+        self.mac = mac
+        self.rfid = rfid
+        self.date_access = datetime.datetime.now().utcnow()
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def __repr__(self):
+        return "Cracha ID:{}, MAC ADDRESS: {}, Rfid: {}".format(self.id, self.mac, self.rfid)
+
+
+class User(db.Model):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True)
+    username = Column(String(18), nullable=False)
+    rfid = Column(String(18), nullable=False)
+    defcon = Column(Integer, default=0)
+
+    def __init__(self, username, rfid):
+        self.username = username
+        self.rfid = rfid
+
+    def __repr__(self):
+        return "User ID:{}, Username: {}, Rfid: {}".format(self.id, self.username, self.rfid)
+
+
+class Location(db.Model):
+    __tablename__ = 'location'
+    id = Column(Integer, primary_key=True)
+    mac = Column(String(18), nullable=False, unique=True)
+    name = Column(String(50))
+    longitude = Column(Float, nullable=True)
+    latitude = Column(Float, nullable=True)
+    defcon = Column(Integer, default=0)
+
+    def __init__(self, mac, name, longitude, latitude, defcon):
+        self.name = name
+        self.mac = mac
+        self.longitude = longitude
+        self.latitude = latitude
+        self.defcon = defcon
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def __repr__(self):
+        return "ID:{}, name: {}, mac: {}, defcon:{}".format(self.id, self.name, self.mac, self.defcon)

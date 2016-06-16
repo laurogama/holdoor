@@ -10,7 +10,6 @@
                 {%- block metas %}
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 {%- endblock metas %}
-
                 {%- block styles %}
                     {% assets "css" %}
                         <link rel="stylesheet" href="{{ ASSET_URL }}"/>
@@ -31,17 +30,11 @@
                         <div class="mdl-layout-spacer"></div>
                         <!-- Navigation -->
                         <nav class="mdl-navigation">
-                            <a class="mdl-navigation__link" href="{{ url_for('index') }}">Home</a>
+                            <a class="mdl-navigation__link" href="{{ url_for('index') }}"><i class="material-icons">home</i></a>
                         </nav>
                     </div>
                 </header>
-                <div class="mdl-layout__drawer">
-                    <span class="mdl-layout-title">Menu</span>
-                    <nav class="mdl-navigation">
-                        <a class="mdl-navigation__link" href="{{ url_for('index') }}">Home</a>
-                        <a class="mdl-navigation__link" href="{{ url_for('product_list') }}">Produtos</a>
-                    </nav>
-                </div>
+                {% include 'menu.html' %}
                 <main class="mdl-layout__content">
                     {% with messages = get_flashed_messages() %}
                         {% if messages %}
@@ -67,7 +60,6 @@
                     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
                 {% endassets %}
             {%- endblock scripts %}
-            </div>
         {%- endblock body %}
         </body>
     {%- endblock html %}

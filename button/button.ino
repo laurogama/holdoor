@@ -1,12 +1,14 @@
  #include "firmware.h"
 
-boolean notifyAppServer(Message message){
-    String content = prepareContent();
-    String host =SERVER_APP;
+boolean notifyAppServer(MessageType message){
+    String content = prepareContent(message);
+    Serial.println(content);
+    String host = SERVER_APP;
     http.begin(host.c_str(), APP_PORT, API_ENDPOINT, false, "");
     http.addHeader("Content-Type", "application/json");
     int httpCode = http.POST(content);
     http.end();
+    Serial.println(httpCode);
     return httpCode==http_codes::HTTP_OK;
 }
 
@@ -16,12 +18,22 @@ void manageConnection(){
     }
 }
 
-String connectContent()
+void turnOff(int pin) {
+  pinMode(pin, OUTPUT);
+  digitalWrite(pin, 1);
+}
+
+String prepareContent(MessageType messageType){
+    switch(messageType){
+        case MessageType::CONNECT:
+        return prepareConnectContent();
+        break;
+    }
+}
+
 String prepareConnectContent(){
     String message = "{\"mac\":\"";
     message.concat(WiFi.macAddress());
-    message.concat("\",\"ip\":\"");
-    message.concat(WiFi.localIP().toString());
     message.concat("\"}");
     return message;
 }
@@ -41,14 +53,32 @@ boolean connect(){
     return true;
 }
 
+void sendMessage(){
+    if(connect()){
+        Serial.println("Connected");
+        if(notifyAppServer(MessageType::CONNECT)){
+            Serial.println("Message Sent");
+        }
+    }
+}
 void setup( void ) {
     Serial.begin(ESP_BAUDRATE);
-    pinMode(GPIO5, INPUT_PULLUP);
-    //attachInterrupt(digitalPinToInterrupt(BUTTON), buttonHandler, CHANGE );
-    notifyAppServer(Message::CONNECT);
+    
+// disable all output to save power
+    turnOff(0);
+    turnOff(2);
+    turnOff(4);
+    turnOff(5);
+    turnOff(12);
+    turnOff(13);
+    turnOff(14);
+    turnOff(15);
 }
 
 void loop ( void ) {
-    //manageConnection();
-
+    sendMessage();
+    ESP.deepSleep(2 * 1000000, WAKE_RF_DEFAULT);
+    delay(100);
+    
+    
 }

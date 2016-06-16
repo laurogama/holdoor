@@ -1,16 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-    {% include 'button/inner_button_list.html' %}
-    {% include 'product/inner_product_list.html' %}
     {% include 'cracha/inner_cracha_list.html' %}
 {% endblock %}
-
 {% block scripts %}
     {{ super() }}
     <script>
         $(document).ready(function () {
             $('#cracha_list').DataTable();
-            $('#button_list').DataTable();
         });
     </script>
 {% endblock %}

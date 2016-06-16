@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-offset-desktop mdl-cell--4-offset-tablet">
+            <form action="{{ url_for('location_new') }}" method="post">
+                <div class="mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title"><h2 class="mdl-card__title-text">New Location</h2></div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-textfield__label" for="name">Name</label>
+                            <input type="text" id="name" name="name" class="mdl-textfield__input">
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-textfield__label" for="mac">Mac</label>
+                            <input type="text" id="mac" name="mac" class="mdl-textfield__input">
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-textfield__label" for="longitude">Longitude</label>
+                            <input type="text" id="longitude" name="longitude" class="mdl-textfield__input" value="0">
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-textfield__label" for="latitude">Latitude</label>
+                            <input type="text" id="latitude" name="latitude" class="mdl-textfield__input" value="0">
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-textfield__label" for="defcon">Defcon</label>
+                            <input type="text" id="defcon" name="defcon" class="mdl-textfield__input" value="0">
+                        </div>
+                        <input type="submit" value="Add"
+                               class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                           href="{{ url_for('location_list') }}">Back</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

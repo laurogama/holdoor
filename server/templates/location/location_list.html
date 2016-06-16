@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+    {% include 'location/inner_location_list.html' %}
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script>
+        $(document).ready(function () {
+            $('#location_list').DataTable();
+        });
+    </script>
+{% endblock %}

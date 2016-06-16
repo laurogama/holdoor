@@ -1,0 +1,36 @@
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-offset-desktop mdl-cell--4-offset-tablet">
+        <h2>Locations</h2>
+        {% if locations %}
+            <table id="cracha_list" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--numeric" align="center">Id</th>
+                    <th class="mdl-data-table__cell--numeric" align="center">Mac</th>
+                    <th class="mdl-data-table__cell--non-numeric" align="center">Name</th>
+                    <th class="mdl-data-table__cell--non-numeric" align="center">Longitude</th>
+                    <th class="mdl-data-table__cell--non-numeric" align="center">Latitude</th>
+                    <th class="mdl-data-table__cell--non-numeric" align="center">Defcon</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for location in locations %}
+                    <tr style="background-color: #fffde7">
+                        <td>{{ location.id }}</td>
+                        <td>{{ location.mac }}</td>
+                        <td>{{ location.name }}</td>
+                        <td>{{ location.longitude }}</td>
+                        <td>{{ location.latitude }}</td>
+                        <td>{{ location.defcon }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        {% else %}
+            <div>No Locations added.</div>
+        {% endif %}
+        <a class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+           href="{{ url_for('location_new') }}"> <i class="material-icons">room</i>New</a>
+    </div>
+</div>

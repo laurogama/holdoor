@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+    {% include 'user/inner_user_list.html' %}
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script>
+        $(document).ready(function () {
+            $('#user_list').DataTable();
+        });
+    </script>
+{% endblock %}

@@ -1,13 +1,14 @@
-#ifndef _FIRMWARE_H
-#define _FIRMWARE_H
+#ifndef _CRACHA_H
+#define _CRACHA_H
 /*
-Dash button - By Lauro Gama
+Leitor RFID wifi - By Lauro Gama
 10/05/2016
 */
 
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
-//#include "credentials.h"
+#include "RfidHandler.h"
+
 extern "C" {
   #include "user_interface.h"
 }
@@ -17,16 +18,24 @@ extern "C" {
 
 #define SERVER_APP          "192.168.1.50"
 #define APP_PORT            80
-#define USERBUTTON          D0             
-#define API_ENDPOINT        "/click/"
+#define API_ENDPOINT        "/cracha/"
 
+enum GPIO{
+    BUZZER=2,
+    LED1=5,
+    LED2=4,
+    LED3 =14,
+    TIP=12
+};
 
 enum TIMING{
+    SHORT_BUZZ=500,
     CLOCK=1,
     SLEEP_DELAY_IN_SECONDS=2,
     WAIT_CONNECT=100,
     WAIT_STATUS=1000,
     WAIT_NOTIFY=2000,
+    WAIT_OPEN_ACCESS=3000,
     CONNECT_TIMEOUT=60000
 
 };
@@ -47,11 +56,16 @@ typedef enum {
     CONNECT = 1,
 }MessageType;
 
-void turnOff(int pin);
-String prepareContent(MessageType messageType);
-String prepareConnectContent();
-void manageConnection();
-void sendMessage();
+RfidHandlerClass rfidHandler;
+String prepareTagContent(String tag);
+int sendTagToServer(String tag);
+void sendMessage(String tag);
+void playBuzzer(int duration);
+void blinkLed(int led, int period);
+void setPins();
+void notifyOpenAccess();
+void notifyBlockedAccess();
+void openAccess(int duration);
+void closeAccess();
 boolean connect();
-boolean notifyAppServer();
 #endif

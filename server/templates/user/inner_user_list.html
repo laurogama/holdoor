@@ -1,0 +1,32 @@
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-offset-desktop mdl-cell--4-offset-tablet">
+        <h2>Users</h2>
+        {% if users %}
+            <table id="user_list" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--numeric" align="center">Id</th>
+                    <th class="mdl-data-table__cell--numeric" align="center">Rfid</th>
+                    <th class="mdl-data-table__cell--non-numeric" align="center">Username</th>
+                    <th class="mdl-data-table__cell--non-numeric" align="center">Deletar</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr style="background-color: #fffde7">
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.rfid }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>
+                            <a href="{{ url_for('user_delete',user_id=user.id) }}"><i class="material-icons">delete_forever</i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div>No Users added.</div>
+        {% endif %}
+        <a href="{{ url_for('user_new') }}"><i class="material-icons">add_circle</i></a>
+    </div>
+</div>
