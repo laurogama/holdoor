@@ -15,8 +15,8 @@ extern "C" {
 #define ESP_BAUDRATE        74880
 #define CONNECTION_TIMEOUT  15000
 
-#define SERVER_APP          "192.168.1.116"
-#define APP_PORT            8000
+#define SERVER_APP          "192.168.1.50"
+#define APP_PORT            80
 #define USERBUTTON          D0             
 #define API_ENDPOINT        "/click/"
 
@@ -31,8 +31,8 @@ enum TIMING{
 
 };
 
-const char *ssid = "inventus2";
-const char *password = "salcsysqsxrt";
+const char *ssid = "Salcomp_sys";
+const char *password = "salcomp@2016";
 HTTPClient http;
 
 typedef enum {

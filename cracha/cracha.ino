@@ -37,8 +37,9 @@ boolean connect(){
 
 void notifyOpenAccess(){
     digitalWrite(LED1, LOW);
-    blinkLed(LED2, WAIT_OPEN_ACCESS);
+    digitalWrite(TIP,LOW);
     Serial.println("Access OK");
+    blinkLed(LED2, WAIT_OPEN_ACCESS);
     //openAccess(WAIT_OPEN_ACCESS);
 }
 
@@ -48,13 +49,13 @@ void notifyBlockedAccess(){
 }
 
 void openAccess(int duration){
-    digitalWrite(TIP,HIGH);
-    delay(duration);
     digitalWrite(TIP,LOW);
+    //delay(duration);
+    //digitalWrite(TIP,LOW);
 }
 
 void closeAccess(){
-    digitalWrite(TIP,LOW);
+    digitalWrite(TIP,HIGH);
 }
 
 void sendMessage(String tag){
@@ -110,5 +111,6 @@ void loop ( void ) {
     rfidHandler.cleanSerial();
     digitalWrite(LED1,HIGH);
     digitalWrite(LED2,LOW);
+    digitalWrite(TIP,HIGH);
     delay(100);
 }
