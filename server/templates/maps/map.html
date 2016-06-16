@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+    {{map.js}}
+{% endblock %}
+{% block content %}
+   {{ map.html }}
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script>
+    </script>
+{% endblock %}

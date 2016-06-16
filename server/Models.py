@@ -61,6 +61,10 @@ class Cracha(db.Model):
         self.rfid = rfid
         self.date_access = datetime.datetime.now().utcnow()
 
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
     def __repr__(self):
         return "Cracha ID:{}, MAC ADDRESS: {}, Rfid: {}".format(self.id, self.mac, self.rfid)
 

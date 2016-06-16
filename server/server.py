@@ -4,6 +4,7 @@ import logging
 
 from flask import render_template, request, jsonify, flash, url_for, redirect
 from flask.ext.assets import Environment
+from flask.ext.googlemaps import GoogleMaps, Map
 
 from ErrorHandler import InvalidUsage
 from Models import Button, Product, Cracha, User, Location
@@ -16,6 +17,7 @@ assets.register(bundles)
 configuration = CONFIG
 app.config['SECRET_KEY'] = configuration['SECRET_KEY']
 app.config['SQLALCHEMY_DATABASE_URI'] = configuration['SQLITE_TEST_DB']
+GoogleMaps(app)
 
 
 @app.route('/')
@@ -169,8 +171,7 @@ def cracha():
         data = request.get_json(force=True)
         print data['mac'], data['rfid']
         cracha = Cracha(data['mac'], data['rfid'])
-        db.session.add(cracha)
-        db.session.commit()
+        cracha.add()
         logging.info("{}:{}".format(datetime.datetime.now(), cracha))
         if User.query.filter_by(rfid=cracha.rfid).first():
             return 'ok', 200
@@ -180,6 +181,22 @@ def cracha():
     except Exception as exception:
         print exception
         raise InvalidUsage('Still coding', status_code=500)
+
+
+@app.route('/map/')
+def map_users():
+    locations = Location.query.all()
+    markers = [(local.longitude, local.latitude) for local in locations]
+    map = Map(
+        identifier="user_map",
+        lat=-3.1328552,
+        lng=-59.9853138,
+        zoom=5,
+        style="height:900px;width:1900px;",
+        markers=markers
+    )
+    return render_template('maps/map.html', map = map)
+    pass
 
 
 @app.errorhandler(InvalidUsage)
