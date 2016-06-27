@@ -48,6 +48,14 @@ void notifyBlockedAccess(){
     Serial.println("Access Unauthorized");
 }
 
+void notifyServerNotResponding(){
+    digitalWrite(LED2,HIGH);
+    playBuzzer(SHORT_BUZZ);
+    playBuzzer(SHORT_BUZZ);
+    playBuzzer(SHORT_BUZZ);
+    Serial.println("Server Not responding");
+}
+
 void openAccess(int duration){
     digitalWrite(TIP,LOW);
     //delay(duration);
@@ -68,6 +76,8 @@ void sendMessage(String tag){
             case HTTP_NOT_AUTHORIZED:
             notifyBlockedAccess();
             break;
+            case HTTP_NOT_RESPONSE:
+            notifyServerNotResponding();
         }
     }
 
@@ -79,7 +89,7 @@ void setup( void ) {
     rfidHandler.init();
     setPins();
     digitalWrite(BUZZER,LOW);
-    //playBuzzer(SHORT_BUZZ);
+    playBuzzer(SHORT_BUZZ);
     Serial.println("Start");
 }
 
@@ -88,7 +98,7 @@ void setPins(){
     pinMode(TIP, OUTPUT);
     pinMode(LED1,OUTPUT);
     pinMode(LED2,OUTPUT);
-    pinMode(LED3,OUTPUT);
+    pinMode(BUTTON, INPUT);
 }
 
 void playBuzzer(int duration){

@@ -21,11 +21,11 @@ extern "C" {
 #define API_ENDPOINT        "/cracha/"
 
 enum GPIO{
-    BUZZER=2,
-    LED1=5,
+    BUZZER=16,
+    LED1=14,
     LED2=4,
-    LED3 =14,
-    TIP=12
+    BUTTON =12,
+    TIP=5
 };
 
 enum TIMING{
@@ -45,6 +45,7 @@ const char *password = "salcomp@2016";
 HTTPClient http;
 
 typedef enum {
+    HTTP_NOT_RESPONSE = -1,
     HTTP_OK = 200,
     HTTP_NOT_AUTHORIZED=401,
     HTTP_NOT_FOUND=404,
