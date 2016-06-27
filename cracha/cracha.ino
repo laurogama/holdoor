@@ -24,14 +24,16 @@ boolean connect(){
     if(WiFi.status() != WL_CONNECTED ){
         WiFi.begin(ssid, password);
         unsigned long start = millis();
-        while((millis()- start) <TIMING::CONNECT_TIMEOUT){
+        while((millis() - start) <TIMING::CONNECT_TIMEOUT){
             if( WiFi.status() == WL_CONNECTED ) {
+                Serial.println(WiFi.localIP());
                 return true;
             }
             delay(TIMING::WAIT_CONNECT);
         }
         return false;
     }
+    Serial.println(WiFi.localIP());
     return true;
 }
 
@@ -83,16 +85,6 @@ void sendMessage(String tag){
 
 }
 
-void setup( void ) {
-    Serial.swap();
-    Serial.begin(ESP_BAUDRATE);
-    rfidHandler.init();
-    setPins();
-    digitalWrite(BUZZER,LOW);
-    playBuzzer(SHORT_BUZZ);
-    Serial.println("Start");
-}
-
 void setPins(){
     pinMode(BUZZER,OUTPUT);
     pinMode(TIP, OUTPUT);
@@ -111,6 +103,16 @@ void blinkLed(int led, int period){
     digitalWrite(led,HIGH); 
     delay(period);
     digitalWrite(led,LOW);
+}
+
+void setup( void ) {
+    Serial.swap();
+    Serial.begin(ESP_BAUDRATE);
+    rfidHandler.init();
+    setPins();
+    digitalWrite(BUZZER,LOW);
+    playBuzzer(SHORT_BUZZ);
+    Serial.println("Start");
 }
 
 void loop ( void ) {
