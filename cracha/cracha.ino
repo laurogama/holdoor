@@ -104,6 +104,16 @@ void blinkLed(int led, int period){
     delay(period);
     digitalWrite(led,LOW);
 }
+boolean checkButton(){
+    boolean result = false;
+    if (digitalRead(BUTTON) == HIGH && lastButtonState == LOW){
+        Serial.println("pressed");
+        delay(1);
+        result = true;
+    }
+    lastButtonState= digitalRead(BUTTON);
+    return result;
+}
 
 void setup( void ) {
     Serial.swap();
@@ -116,6 +126,9 @@ void setup( void ) {
 }
 
 void loop ( void ) {
+    if(checkButton()){
+        notifyOpenAccess();
+    }
     if(rfidHandler.readrfidTag()){
         playBuzzer(TIMING::SHORT_BUZZ);
         sendMessage(rfidHandler.getrfidTag());

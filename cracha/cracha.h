@@ -24,7 +24,7 @@ enum GPIO{
     BUZZER=16,
     LED1=14,
     LED2=4,
-    BUTTON =12,
+    BUTTON = 12,
     TIP=5
 };
 
@@ -40,10 +40,6 @@ enum TIMING{
 
 };
 
-const char *ssid = "Salcomp_sys";
-const char *password = "salcomp@2016";
-HTTPClient http;
-
 typedef enum {
     HTTP_NOT_RESPONSE = -1,
     HTTP_OK = 200,
@@ -57,7 +53,12 @@ typedef enum {
     CONNECT = 1,
 }MessageType;
 
+const char *ssid = "Salcomp_sys";
+const char *password = "salcomp@2016";
+HTTPClient http;
+boolean lastButtonState = LOW;
 RfidHandlerClass rfidHandler;
+
 String prepareTagContent(String tag);
 int sendTagToServer(String tag);
 void sendMessage(String tag);
