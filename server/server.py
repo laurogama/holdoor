@@ -166,17 +166,15 @@ def button():
 @app.route('/cracha/', methods=['POST'])
 def cracha():
     try:
-        print request
-        print request.data
         data = request.get_json(force=True)
         print data['mac'], data['rfid']
         cracha = Cracha(data['mac'], data['rfid'])
         cracha.add()
         logging.info("{}:{}".format(datetime.datetime.now(), cracha))
-        if User.query.filter_by(rfid=cracha.rfid).first():
-            return 'ok', 200
-        else:
-            return 'Not authorized', 401
+        # if User.query.filter_by(rfid=cracha.rfid).first():
+        return 'ok', 200
+        # else:
+        #     return 'Not authorized', 401
 
     except Exception as exception:
         print exception
