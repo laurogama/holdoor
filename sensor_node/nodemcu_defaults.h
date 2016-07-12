@@ -6,10 +6,11 @@
 
 enum GPIO{
     BUZZER=16,
-    LED1=14,
+    //LED1=14,
     LED2=4,
     BUTTON = 12,
-    TIP=5
+    TIP=5,
+    SENSOR=4,
 };
 typedef enum {
     HTTP_NOT_RESPONSE = -1,

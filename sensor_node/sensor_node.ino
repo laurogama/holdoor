@@ -1,4 +1,10 @@
 #include "sensor_node.h"
+
+void setPins(){
+  //  ADC_MODE(ADC_VCC);
+    //pinMode(SENSOR, INPUT);
+}
+
 boolean connect(){
     if(WiFi.status() != WL_CONNECTED ){
         WiFi.begin(ssid, password);
@@ -23,25 +29,24 @@ String prepareTagContent(String tag){
     return message;
 }
 
-int sendTagToServer(int tag){
-    String content = prepareTagContent(String(tag));
+int sendTagToServer(String content){
     Serial.println(content);
-    String host = SERVER_APP;
+    //String host = SERVER_APP;
     http.begin(SERVER_APP, PORT_APP, API_ENDPOINT, false, "");
-    http.addHeader("plotly-convertTimestamp","America/Manaus");
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    http.addHeader("plotly-streamtoken",tokens[0]);
+    //http.addHeader("plotly-convertTimestamp",TIMEZONE);
+    http.addHeader("Content-Type", "application/json");
+    //http.addHeader("plotly-streamtoken",tokens[0]);
     int httpCode = http.POST(content);
     http.end();
     Serial.println(httpCode);
     return httpCode;
 }
 
-boolean sendMessage(int data){
+boolean sendMessage(String data){
     if(connect()){
         Serial.println("Connected");
         Serial.println(WiFi.localIP());
-        ESP8266Connect(SERVER_APP, 80);
+        ESP8266Connect(SERVER_APP, PORT_APP);
         switch(sendTagToServer(data)){
             case HTTP_OK:
             return true;
@@ -58,8 +63,23 @@ boolean sendMessage(int data){
 
 }
 
-int collectData(){
-    return 0;
+String collectData(){
+    float h = dht.readHumidity();
+  // Read temperature as Celsius (the default)
+    float t = dht.readTemperature();
+
+    Serial.print("Humidity: ");
+    Serial.print(h);
+    Serial.print(" %\t");
+    Serial.print("Temperature: ");
+    Serial.print(t);
+    Serial.print(" *C ");
+    Serial.print("Voltage battery: ");
+    Serial.println(ESP.getVcc()/10);
+    String result ="{\"temperature\":";
+    result.concat(String(t));
+    result.concat("}");
+    return result;
 }
 
 void ESP8266Connect(char* url, int port){
@@ -77,14 +97,17 @@ void ESP8266Connect(char* url, int port){
 void setup( void ) {
     Serial.swap();
     Serial.begin(ESP_BAUDRATE);
-    //rfidHandler.init();
-    //setPins();
-    digitalWrite(BUZZER,LOW);
+    setPins();
+   // digitalWrite(BUZZER,LOW);
     //playBuzzer(SHORT_BUZZ);
     Serial.println("Start");
+    WiFi.printDiag(Serial);
+    dht.begin();
 }
 
 void loop ( void ) {
+
     sendMessage(collectData());
-    ESP.deepSleep(2 * 1000000, WAKE_RF_DEFAULT);
+    delay(2000);
+    //ESP.deepSleep(2 * 1000000, WAKE_RF_DEFAULT);
 }

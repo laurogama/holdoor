@@ -2,6 +2,7 @@
 #define _SENSOR_NODE_H
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
+#include <DHT.h>
 #include "nodemcu_defaults.h"
 
 #define VERSION             "1.1.0"
@@ -15,10 +16,12 @@
 #define maxpoints  "30"
 #define world_readable true
 #define convertTimestamp true
-#define timezone    "Australia/Melbourne"
-#define SERVER_APP  "arduino.plot.ly"
-#define PORT_APP    80
-#define API_ENDPOINT "/clientresp"
+#define TIMEZONE    "America/Manaus"
+#define SERVER_APP  "192.168.1.115"
+#define PORT_APP    8000
+#define API_ENDPOINT "/temperature/"
+#define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
+                        // 
 char *tokens[nTraces] = {"u0oi8f2ho4"};
 char stream_site[25] = {0};
 WiFiClient client;
@@ -35,5 +38,7 @@ enum TIMING{
     CONNECT_TIMEOUT=60000
 
 };
+DHT dht(SENSOR, DHTTYPE);
 void ESP8266Connect(char* url, int port);
+
 #endif
