@@ -1,6 +1,6 @@
  #include "cracha.h"
 
-int sendTagToServer(String tag){
+ int sendTagToServer(String tag){
     String content = prepareTagContent(tag);
     Serial.println(content);
     String host = SERVER_APP;
@@ -51,10 +51,10 @@ void notifyBlockedAccess(){
 }
 
 void notifyServerNotResponding(){
-    digitalWrite(LED2,HIGH);
+    digitalWrite(LED1, LOW);
     playBuzzer(SHORT_BUZZ);
-    playBuzzer(SHORT_BUZZ);
-    playBuzzer(SHORT_BUZZ);
+    digitalWrite(TIP,LOW);
+    delay(WAIT_OPEN_ACCESS);
     Serial.println("Server Not responding");
 }
 
@@ -80,6 +80,8 @@ void sendMessage(String tag){
             break;
             case HTTP_NOT_RESPONSE:
             notifyServerNotResponding();
+            default:
+            notifyOpenAccess();
         }
     }
 
@@ -131,11 +133,15 @@ void loop ( void ) {
     }
     if(rfidHandler.readrfidTag()){
         playBuzzer(TIMING::SHORT_BUZZ);
-        sendMessage(rfidHandler.getrfidTag());
+        if(rfidHandler.getrfidTag().indexOf(MASTER_TAG)!=-1){
+            notifyOpenAccess();
+            }else{
+                sendMessage(rfidHandler.getrfidTag());
+            }
+        }
+        rfidHandler.cleanSerial();
+        digitalWrite(LED1,HIGH);
+        digitalWrite(LED2,LOW);
+        digitalWrite(TIP,HIGH);
+        delay(100);
     }
-    rfidHandler.cleanSerial();
-    digitalWrite(LED1,HIGH);
-    digitalWrite(LED2,LOW);
-    digitalWrite(TIP,HIGH);
-    delay(100);
-}

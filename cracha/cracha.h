@@ -19,7 +19,7 @@ extern "C" {
 #define SERVER_APP          "192.168.1.50"
 #define APP_PORT            80
 #define API_ENDPOINT        "/cracha/"
-
+#define MASTER_TAG          "12957906"
 enum GPIO{
     BUZZER=16,
     LED1=14,
